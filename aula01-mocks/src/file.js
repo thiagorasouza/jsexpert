@@ -1,11 +1,10 @@
 const { readFile } = require("node:fs/promises");
-const { join } = require("node:path");
 const errors = require("./errors");
 
 const DEFAULT_VALIDATION_OPTIONS = {
-  header: ["id","name","profession","age"],
-  maxLines: 3
-}
+  header: ["id", "name", "profession", "age"],
+  maxLines: 3,
+};
 
 class File {
   static async csvToJson(filePath) {
@@ -27,31 +26,30 @@ class File {
     if (!isHeaderValid) {
       return {
         error: errors.INVALID_HEADERS,
-        valid: false
-      }
+        valid: false,
+      };
     }
 
-    const isContentLengthValid = 
-      lines.length > 0 &&
-      lines.length <= options.maxLines;
+    const isContentLengthValid =
+      lines.length > 0 && lines.length <= options.maxLines;
     if (!isContentLengthValid) {
       return {
         error: errors.INVALID_CONTENT_LENGTH,
-        valid: false
-      }
+        valid: false,
+      };
     }
 
     return {
-      valid: true
-    }
+      valid: true,
+    };
   }
 
   static parseCsvToJson(csvString) {
     const [firstLine, ...lines] = csvString.split("\n");
     const header = firstLine.split(",");
 
-    const users = lines.map(line => {
-      const columns = line.split(",");      
+    const users = lines.map((line) => {
+      const columns = line.split(",");
       const user = columns.reduce((obj, value, i) => {
         obj[header[i]] = value;
         return obj;
@@ -64,4 +62,4 @@ class File {
   }
 }
 
-module.exports = File
+module.exports = File;
