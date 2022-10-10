@@ -1,0 +1,25 @@
+{
+  "name": "jsexpert",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thiagorasouza/jsexpert.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thiagorasouza/jsexpert/issues"
+  },
+  "homepage": "https://github.com/thiagorasouza/jsexpert#readme",
+  "devDependencies": {
+    "eslint": "8.25.0",
+    "eslint-config-prettier": "8.5.0",
+    "prettier": "2.7.1"
+  }
+}
