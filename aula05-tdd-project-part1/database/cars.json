@@ -1,0 +1,23 @@
+[
+  {
+    "id": "3ec194c2-095b-46df-ad36-ef0da4709b54",
+    "name": "Accord",
+    "releaseYear": 2021,
+    "available": true,
+    "gasAvailable": true
+  },
+  {
+    "id": "35363133-9b07-4326-a11b-455b23e0ffa7",
+    "name": "Spyder",
+    "releaseYear": 2021,
+    "available": true,
+    "gasAvailable": true
+  },
+  {
+    "id": "9f038902-552d-4c90-aea8-91077899ea7e",
+    "name": "Countach",
+    "releaseYear": 2020,
+    "available": true,
+    "gasAvailable": true
+  }
+]
