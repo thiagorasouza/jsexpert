@@ -1,0 +1,1 @@
+{"processes":{"2d7e4d7d-d07d-44bb-9ee4-4eb2733a68b7":{"parent":"fa47d163-94be-4df5-80b6-195df4ab108b","children":[]},"fa47d163-94be-4df5-80b6-195df4ab108b":{"parent":null,"children":["2d7e4d7d-d07d-44bb-9ee4-4eb2733a68b7"]}},"files":{"/home/thiago/jsexpert/aula04-coverage-e2e/api.js":["2d7e4d7d-d07d-44bb-9ee4-4eb2733a68b7"]},"externalIds":{}}
