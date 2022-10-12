@@ -1,0 +1,24 @@
+{
+  "name": "aula05-tdd-project-part1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha -w **/**/*.test.js",
+    "test:coverage": "nyc mocha **/**/*.test.js --parallel",
+    "seed": "node ./seed"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^4.3.6",
+    "faker": "^5.1.0",
+    "mocha": "^10.0.0",
+    "nyc": "^15.1.0",
+    "sinon": "^14.0.1"
+  }
+}
