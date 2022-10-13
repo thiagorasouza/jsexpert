@@ -67,6 +67,24 @@ routes.set(getFinalPriceRegex, async (req, res) => {
   return res.end(JSON.stringify(finalPrice));
 });
 
+routes.set("/order", async (req, res) => {
+  const body = await new Promise((resolve) => {
+    req.on("data", (data) => resolve(JSON.parse(data)));
+  });
+  const { carCategory, customer, numberOfDays } = body;
+
+  const transaction = await carService.rent(
+    carCategory,
+    customer,
+    numberOfDays
+  );
+
+  res.writeHead(200, {
+    "Content-Type": "application/json",
+  });
+  res.end(JSON.stringify(transaction));
+});
+
 const server = http.createServer(async (req, res) => {
   const { method, url } = req;
   const routeKey = `${method}:${url}`;

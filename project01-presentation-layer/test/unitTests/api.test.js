@@ -8,6 +8,7 @@ const {
 const request = require("supertest");
 const { expect } = require("chai");
 const sinon = require("sinon");
+const Transaction = require("../../src/entities/transaction");
 
 const mocks = {
   validCarCategory: require("../mocks/validCarCategory.json"),
@@ -75,6 +76,53 @@ describe("API Test Suite", () => {
       .expect(200)
       .expect("Content-Type", /json/);
     const expected = carService.currencyFormat.format(244.4);
+
+    expect(response.body).to.be.deep.equal(expected);
+  });
+
+  // POST /order
+  it("shold return the transaction information for a given order", async () => {
+    const car = mocks.validCar;
+    const carCategory = {
+      ...mocks.validCarCategory,
+      price: 37.6,
+      carIds: [car.id],
+    };
+    const customer = { ...mocks.validCustomer, age: 50 };
+    const numberOfDays = 5;
+    const finalPrice = carService.currencyFormat.format(244.4);
+    const dueDate = "10 de novembro de 2022";
+
+    const actualDate = new Date(2022, 10, 5);
+    sandbox.useFakeTimers(actualDate.getTime());
+
+    sandbox
+      .stub(categoryService, categoryService.getCategoryById.name)
+      .resolves(carCategory);
+
+    sandbox
+      .stub(customerService, customerService.getCustomerById.name)
+      .resolves(customer);
+
+    sandbox.stub(carService, carService.getAvailableCar.name).resolves(car);
+
+    const url = "/order";
+
+    const response = await request(api)
+      .post(url)
+      .send({
+        carCategory,
+        customer,
+        numberOfDays,
+      })
+      .expect(200)
+      .expect("Content-Type", /json/);
+    const expected = new Transaction({
+      customer,
+      car,
+      finalPrice,
+      dueDate,
+    });
 
     expect(response.body).to.be.deep.equal(expected);
   });
