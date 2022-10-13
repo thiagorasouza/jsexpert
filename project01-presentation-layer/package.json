@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha -w **/**/*.test.js",
+    "test": "mocha -w **/**/*.test.js --parallel",
     "test:coverage": "nyc mocha **/**/*.test.js --parallel",
     "seed": "node ./seed"
   },

@@ -74,7 +74,7 @@ describe("CarService Testing Suite", () => {
     expect(result).to.be.deep.equal(car);
   });
 
-  it("given a car category, a customer and the number of days, it should calculate the final price", async () => {
+  it("given a car category, a customer and the number of days, it should calculate the final price", () => {
     const carCategory = Object.create(mocks.validCarCategory);
     carCategory.price = 37.6;
 
@@ -97,7 +97,7 @@ describe("CarService Testing Suite", () => {
     expect(result).to.be.deep.equal(expected);
   });
 
-  it("given a car category, a custimer and the number of days, it should return the transaction data", async () => {
+  it("given a car category, a customer and the number of days, it should return the transaction data", async () => {
     const customer = { ...mocks.validCustomer, age: 50 };
     const car = { ...mocks.validCar };
     const carCategory = {
