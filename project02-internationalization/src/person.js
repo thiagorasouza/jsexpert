@@ -39,4 +39,15 @@ export default class Person {
       to: dateFormatter.format(mapDate(this.to)),
     };
   }
+
+  static getInstanceFromString(str) {
+    const [id, vehicles, kmTraveled, from, to] = str.split(" ");
+    return new Person({
+      id,
+      vehicles: vehicles.split(","),
+      kmTraveled,
+      from,
+      to,
+    });
+  }
 }
