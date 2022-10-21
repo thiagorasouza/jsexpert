@@ -22,6 +22,16 @@ export default class TerminalController {
     });
   }
 
+  updateTerminal(newItem) {
+    this.data.push(newItem);
+    this.print(chalkTable(this.getTableOptions(), this.data));
+  }
+
+  closeTerminal() {
+    this.terminal.close();
+    console.log("Process finished");
+  }
+
   initializeTable(database, language) {
     const data = database.map((item) => new Person(item).formatter(language));
     const table = chalkTable(this.getTableOptions(), data);
@@ -45,10 +55,5 @@ export default class TerminalController {
 
   question(msg = "") {
     return new Promise((resolve) => this.terminal.question(msg, resolve));
-  }
-
-  closeTerminal() {
-    this.terminal.close();
-    console.log("Process finished");
   }
 }
