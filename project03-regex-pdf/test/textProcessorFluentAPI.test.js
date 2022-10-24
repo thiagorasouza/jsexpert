@@ -30,4 +30,56 @@ describe("TextProcessorFluentAPI Test Suite", () => {
     ];
     expect(result).to.be.deep.equal(expected);
   });
+
+  it("divides text into columns", () => {
+    const person = [
+      "Xuxa da Silva, brasileira, casada, CPF 235.743.420-12, residente e ",
+      "domiciliada a Rua dos bobos, zero, bairro Alphaville, São Paulo",
+    ].join("\n");
+
+    const result = new TextProcessorFluentAPI(person)
+      .divideIntoColumns()
+      .build();
+    const expected = [
+      "Xuxa da Silva",
+      " brasileira",
+      " casada",
+      " CPF 235.743.420-12",
+      " residente e \ndomiciliada a Rua dos bobos",
+      " zero",
+      " bairro Alphaville",
+      " São Paulo",
+    ];
+
+    expect(result).to.be.deep.equal(expected);
+  });
+
+  it("trims and removes line breaks", () => {
+    const columns = [
+      "Xuxa da Silva",
+      " brasileira",
+      " casada",
+      " CPF 235.743.420-12",
+      " residente e \ndomiciliada a Rua dos bobos",
+      " zero",
+      " bairro Alphaville",
+      " São Paulo",
+    ];
+
+    const result = new TextProcessorFluentAPI(columns)
+      .trimAndRemoveLineBreaks()
+      .build();
+    const expected = [
+      "Xuxa da Silva",
+      "brasileira",
+      "casada",
+      "CPF 235.743.420-12",
+      "residente e domiciliada a Rua dos bobos",
+      "zero",
+      "bairro Alphaville",
+      "São Paulo",
+    ];
+
+    expect(result).to.be.deep.equal(expected);
+  });
 });

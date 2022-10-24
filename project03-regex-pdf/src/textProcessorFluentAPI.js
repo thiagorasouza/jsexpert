@@ -1,3 +1,5 @@
+const { evaluateRegex } = require("./util");
+
 class TextProcessorFluentAPI {
   #content;
 
@@ -6,8 +8,20 @@ class TextProcessorFluentAPI {
   }
 
   extractPeopleData() {
-    const regex = /(?<=(?:contratante|contratada)\:\s)[\s\S]*?(?=\.\s*$)/gim;
+    const regex = evaluateRegex(
+      /(?<=(?:contratante|contratada):\s)[\s\S]*?(?=\.\s*$)/gim
+    );
     this.#content = this.#content.match(regex);
+    return this;
+  }
+
+  divideIntoColumns() {
+    this.#content = this.#content.split(",");
+    return this;
+  }
+
+  trimAndRemoveLineBreaks() {
+    this.#content = this.#content.map((item) => item.trim().replace("\n", ""));
     return this;
   }
 
