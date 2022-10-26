@@ -1,3 +1,4 @@
+const Person = require("./person");
 const { evaluateRegex } = require("./util");
 
 class TextProcessorFluentAPI {
@@ -16,12 +17,19 @@ class TextProcessorFluentAPI {
   }
 
   divideIntoColumns() {
-    this.#content = this.#content.split(",");
+    this.#content = this.#content.map((item) => item.split(","));
     return this;
   }
 
   trimAndRemoveLineBreaks() {
-    this.#content = this.#content.map((item) => item.trim().replace("\n", ""));
+    this.#content = this.#content.map((item) =>
+      item.map((line) => line.trim().replace("\n", ""))
+    );
+    return this;
+  }
+
+  mapPerson() {
+    this.#content = this.#content.map((item) => new Person(item));
     return this;
   }
 
