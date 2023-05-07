@@ -1,0 +1,23 @@
+[
+  {
+    "id": "d6cc0d1d-8796-4744-97ff-1fa00a24d51e",
+    "name": "Fortwo",
+    "releaseYear": 2014,
+    "available": true,
+    "gasAvailable": true
+  },
+  {
+    "id": "f3058433-8aec-450b-b4b9-1ac192d959fc",
+    "name": "Accord",
+    "releaseYear": 2017,
+    "available": true,
+    "gasAvailable": true
+  },
+  {
+    "id": "ca6584ee-6579-4256-8cd9-2042a57c4dbd",
+    "name": "Explorer",
+    "releaseYear": 2010,
+    "available": true,
+    "gasAvailable": true
+  }
+]
