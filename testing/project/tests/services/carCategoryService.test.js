@@ -3,10 +3,12 @@ const { expect } = require("chai");
 const sinon = require("sinon");
 
 const CarCategoryService = require("../../src/services/carCategoryService");
+const Transaction = require("../../src/entities/transactions");
 
 const mocks = {
   car: require("../mocks/car.json"),
   carCategory: require("../mocks/carCategory.json"),
+  customer: require("../mocks/customer.json"),
 };
 
 const makeCarRepositoryStub = () => {
@@ -29,15 +31,32 @@ const makeCarCategoryRepositoryStub = () => {
   return new CarCategoryRepositoryStub();
 };
 
+const makeCustomerRepositoryStub = () => {
+  class CustomerRepositoryStub {
+    async find() {
+      return mocks.customer;
+    }
+  }
+
+  return new CustomerRepositoryStub();
+};
+
 const makeSut = () => {
   const carRepositoryStub = makeCarRepositoryStub();
   const carCategoryRepositoryStub = makeCarCategoryRepositoryStub();
+  const customerRepositoryStub = makeCustomerRepositoryStub();
   const sut = new CarCategoryService({
     carRepository: carRepositoryStub,
     carCategoryRepository: carCategoryRepositoryStub,
+    customerRepository: customerRepositoryStub,
   });
 
-  return { sut, carRepositoryStub, carCategoryRepositoryStub };
+  return {
+    sut,
+    carRepositoryStub,
+    carCategoryRepositoryStub,
+    customerRepositoryStub,
+  };
 };
 
 describe("CarCategoryService Test Suite", () => {
@@ -120,6 +139,92 @@ describe("CarCategoryService Test Suite", () => {
       const expected = mocks.car;
 
       expect(result).to.be.deep.equal(expected);
+    });
+  });
+
+  describe("getTaxFromAge()", () => {
+    it("should return the tax for the age range", () => {
+      const { sut } = makeSut();
+      sandbox.stub(sut, "tax").get(() => [
+        { from: 10, to: 20, multiplier: 2 },
+        { from: 20, to: 30, multiplier: 3 },
+      ]);
+
+      const age = 25;
+      const result = sut.getTaxFromAge(age);
+      const expected = 3;
+
+      expect(result).to.be.equal(expected);
+    });
+  });
+
+  describe("calculateFinalPrice()", () => {
+    it("should calculate final price given customer id, category id and number of rental days", async () => {
+      const { sut, carCategoryRepositoryStub } = makeSut();
+
+      const mockPrice = 37.6;
+      sandbox
+        .stub(carCategoryRepositoryStub, carCategoryRepositoryStub.find.name)
+        .resolves({
+          ...mocks.carCategory,
+          price: mockPrice,
+        });
+
+      const mockTax = 1.3;
+      sandbox.stub(sut, sut.getTaxFromAge.name).returns(mockTax);
+
+      const customerId = "valid_customer_id";
+      const categoryId = "valid_category_id";
+      const numberOfDays = 5;
+
+      const result = await sut.calculateFinalPrice(
+        customerId,
+        categoryId,
+        numberOfDays
+      );
+      const expected = sut.currencyFormatter.format(244.4);
+
+      expect(result).to.be.equal(expected);
+    });
+  });
+
+  describe("rent()", () => {
+    it("should return the customer, the car, the final price and the due date", async () => {
+      const { sut, customerRepositoryStub } = makeSut();
+
+      const customerId = "valid_customer_id";
+      const categoryId = "valid_category_id";
+      const numberOfDays = 5;
+
+      const finalPrice = sut.currencyFormatter.format(244.4);
+      const today = new Date("2020", "10", "5");
+      const clock = sandbox.useFakeTimers(today.getTime());
+      const dueDate = new Date(today.setDate(today.getDate() + 5));
+
+      sandbox
+        .stub(customerRepositoryStub, customerRepositoryStub.find.name)
+        .withArgs(customerId)
+        .resolves(mocks.customer);
+      sandbox
+        .stub(sut, sut.getAvailableCar.name)
+        .withArgs(categoryId)
+        .resolves(mocks.car);
+      sandbox
+        .stub(sut, sut.calculateFinalPrice.name)
+        .withArgs(customerId, categoryId, numberOfDays)
+        .resolves(finalPrice);
+
+      const result = await sut.rent(customerId, categoryId, numberOfDays);
+      const expected = new Transaction({
+        customer: mocks.customer,
+        car: mocks.car,
+        finalPrice,
+        dueDate: sut.dateFormatter(dueDate),
+      });
+
+      expect(result).to.be.deep.equal(expected);
+
+      clock.restore();
     });
   });
 });

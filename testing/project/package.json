@@ -1,11 +1,12 @@
 {
-  "name": "project",
+  "name": "TDD project",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test:dev": "npx mocha -w */**/*.test.js",
-    "test": "npx mocha */*.test.js",
+    "test:cov": "npx nyc npm run test",
+    "test": "npx mocha */**/*.test.js",
     "seed": "node ./seed/index.js"
   },
   "engine": {
@@ -21,6 +22,7 @@
     "eslint-config-prettier": "^8.8.0",
     "mocha": "^10.2.0",
     "nodemon": "^2.0.22",
+    "nyc": "^15.1.0",
     "prettier": "^2.8.8",
     "sinon": "^15.0.4"
   }
